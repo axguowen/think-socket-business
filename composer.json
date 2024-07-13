@@ -1,0 +1,36 @@
+{
+    "name": "axguowen/think-socket-business",
+    "description": "Socket Business Service For ThinkPHP",
+    "keywords": [
+        "socket",
+        "business",
+        "thinkphp"
+    ],      
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "axguowen",
+            "email": "axguowen@qq.com"
+        }
+    ],
+    "require": {
+        "workerman/gateway-worker": ">=3.0.0",
+        "topthink/framework": "^6.1 || ^8.0",
+        "ext-fileinfo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "think\\socket\\business\\": "src"
+        }
+    },
+    "extra": {
+        "think":{
+            "services":[
+                "think\\socket\\business\\Service"
+            ],
+            "config": {
+                "socketbusiness": "src/config.php"
+            }
+        }
+    }
+}
