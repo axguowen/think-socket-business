@@ -79,8 +79,15 @@ class Command extends Base
             $output->writeln('Starting socket business service...');
         }
 
+        // 读取配置
+        $options = $this->app->config->get('socketbusiness', []);
+        // 如果是守护进程模式
+        if ($input->hasOption('daemon')) {
+            $options['daemonize'] = true;
+        }
+
         // 实例化
-        $business = $this->app->make(Business::class, [$input, $output]);
+        $business = $this->app->make(Business::class, [$options]);
 
         if (DIRECTORY_SEPARATOR == '\\') {
             $output->writeln('You can exit with <info>`CTRL-C`</info>');

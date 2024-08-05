@@ -11,9 +11,7 @@
 
 namespace think\socket\business;
 
-use think\App;
-use think\console\Input;
-use think\console\Output;
+use think\facade\App;
 use Workerman\Worker;
 use GatewayWorker\BusinessWorker;
 
@@ -40,38 +38,15 @@ class Business
 	];
 
     /**
-     * App实例
-     * @var App
-     */
-    protected $app;
-
-    /**
-     * Input实例
-     * @var Input
-     */
-    protected $input;
-
-    /**
-     * Output实例
-     * @var Output
-     */
-    protected $output;
-
-    /**
      * 架构函数
      * @access public
-	 * @param App $app 应用实例
-     * @param Input $input 输入
-     * @param Output $output 输出
+	 * @param array $options
      * @return void
      */
-    public function __construct(App $app, Input $input, Output $output)
+    public function __construct(array $options = [])
     {
-        $this->app = $app;
-        $this->input = $input;
-        $this->output = $output;
         // 合并配置
-		$this->options = array_merge($this->options, $this->app->config->get('socketbusiness'));
+		$this->options = array_merge($this->options, $options);
         // 如果业务处理类是空
         if(empty($this->options['event_handler'])){
             throw new \Exception('business event handler can not be empty');
@@ -95,7 +70,7 @@ class Business
             $businessWorker->name = 'think-socket-business';
         }
         // 设置runtime路径
-        $this->app->setRuntimePath($this->app->getRuntimePath() . $businessWorker->name . DIRECTORY_SEPARATOR);
+        App::setRuntimePath(App::getRuntimePath() . $businessWorker->name . DIRECTORY_SEPARATOR);
         // BussinessWorker进程数量
         $businessWorker->count = $this->options['count'];
         // 服务注册地址
@@ -105,7 +80,7 @@ class Business
         // 业务处理类
         $businessWorker->eventHandler = $this->options['event_handler'];
         // 如果指定以守护进程方式运行
-        if ($this->input->hasOption('daemon') || true === $this->options['daemonize']) {
+        if (true === $this->options['daemonize']) {
             Worker::$daemonize = true;
         }
 	}
