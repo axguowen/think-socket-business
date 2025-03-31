@@ -20,7 +20,7 @@ return [
     // Gateway通讯密钥
     'secret_key' => '',
     // 业务处理类，业务类至少要实现onMessage静态方法，onConnect和onClose静态方法可以不用实现。
-    'event_handler' => '',
+    'event_handler' => \think\socket\business\Events::class,
     // 是否以守护进程启动
     'daemonize' => false,
     // 内容输出文件路径
